@@ -1,8 +1,8 @@
 {
   "name": "loja-api",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "version": "1.0.0",
+  "description": "Loja Virtual",
+  "author": "Afranio Dantas",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
