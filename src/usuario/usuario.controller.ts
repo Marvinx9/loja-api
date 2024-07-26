@@ -18,7 +18,7 @@ import { v4 as uuid } from 'uuid';
 export class UsuarioController {
   constructor(private usuarioRepository: UsuarioRepository) {}
   @Get()
-  async gettUsuarios() {
+  async getUsuarios() {
     const usuariosSalvos = await this.usuarioRepository.listar();
     const usuariosList = usuariosSalvos.map(
       (usuario) => new GetUsuarioDto(usuario.id, usuario.nome),
