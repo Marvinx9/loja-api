@@ -1,10 +1,10 @@
-import { CaracteristicaProduto } from './caracteristicaProduto.dto';
-import { ImagemProduto } from './imagemProduto.dto';
+import { CaracteristicaProduto } from './caracteristicaProduto.entity.dto';
+import { ImagemProduto } from './imagemProduto.entity.dto';
 
 export class GetProdutoDto {
   constructor(
     readonly id: string,
-    readonly usuarioId: string,
+    readonly usuario_id: string,
     readonly nome: string,
     readonly valor: number,
     readonly quantidade: number,

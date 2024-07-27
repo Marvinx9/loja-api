@@ -1,7 +1,7 @@
 import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CaracteristicaProduto } from './caracteristicaProduto.dto';
-import { ImagemProduto } from './imagemProduto.dto';
+import { CaracteristicaProduto } from './caracteristicaProduto.entity.dto';
+import { ImagemProduto } from './imagemProduto.entity.dto';
 
 export class PostProdutoDto {
   @IsNotEmpty({ message: 'Id do usuario não pode ser vazio' })

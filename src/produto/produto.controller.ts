@@ -24,7 +24,7 @@ export class ProdutoController {
       (produto) =>
         new GetProdutoDto(
           produto.id,
-          produto.usuarioId,
+          produto.usuario_id,
           produto.nome,
           produto.valor,
           produto.quantidade,
@@ -41,7 +41,7 @@ export class ProdutoController {
   async postProduto(@Body() dadosDoProduto: PostProdutoDto) {
     const produtoEntity = new ProdutoEntity();
     produtoEntity.id = uuid();
-    produtoEntity.usuarioId = dadosDoProduto.usuarioId;
+    produtoEntity.usuario_id = dadosDoProduto.usuarioId;
     produtoEntity.nome = dadosDoProduto.nome;
     produtoEntity.valor = dadosDoProduto.valor;
     produtoEntity.quantidade = dadosDoProduto.quantidade;
@@ -53,7 +53,7 @@ export class ProdutoController {
     return {
       produto: new GetProdutoDto(
         produtoEntity.id,
-        produtoEntity.usuarioId,
+        produtoEntity.usuario_id,
         produtoEntity.nome,
         produtoEntity.valor,
         produtoEntity.quantidade,
