@@ -24,9 +24,14 @@ export class ProdutoController {
       (produto) =>
         new GetProdutoDto(
           produto.id,
+          produto.usuarioId,
           produto.nome,
-          produto.preco,
+          produto.valor,
           produto.quantidade,
+          produto.descricao,
+          produto.categoria,
+          produto.caracteristicas,
+          produto.imagens,
         ),
     );
     return produtoList;
@@ -36,16 +41,26 @@ export class ProdutoController {
   async postProduto(@Body() dadosDoProduto: PostProdutoDto) {
     const produtoEntity = new ProdutoEntity();
     produtoEntity.id = uuid();
+    produtoEntity.usuarioId = dadosDoProduto.usuarioId;
     produtoEntity.nome = dadosDoProduto.nome;
-    produtoEntity.preco = dadosDoProduto.preco;
+    produtoEntity.valor = dadosDoProduto.valor;
     produtoEntity.quantidade = dadosDoProduto.quantidade;
+    produtoEntity.descricao = dadosDoProduto.descricao;
+    produtoEntity.categoria = dadosDoProduto.categoria;
+    produtoEntity.caracteristicas = dadosDoProduto.caracteristicas;
+    produtoEntity.imagens = dadosDoProduto.imagens;
     this.produtoRepository.salvar(produtoEntity);
     return {
       produto: new GetProdutoDto(
         produtoEntity.id,
+        produtoEntity.usuarioId,
         produtoEntity.nome,
-        produtoEntity.preco,
+        produtoEntity.valor,
         produtoEntity.quantidade,
+        produtoEntity.descricao,
+        produtoEntity.categoria,
+        produtoEntity.caracteristicas,
+        produtoEntity.imagens,
       ),
       mensagem: 'produto criado com sucesso',
     };

@@ -1,18 +1,40 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
+import { CaracteristicaProduto } from './caracteristicaProduto.dto';
+import { ImagemProduto } from './imagemProduto.dto';
 
 export class PostProdutoDto {
-  @IsNotEmpty({ message: 'Nome não pode ser vazio' })
+  @IsNotEmpty({ message: 'Id do usuario não pode ser vazio' })
+  @IsString()
+  usuarioId: string;
+
+  @IsNotEmpty({ message: 'Nome do produto não pode ser vazio' })
   @IsString()
   nome: string;
 
-  @IsNotEmpty({ message: 'Preco não pode ser vazio' })
+  @IsNotEmpty({ message: 'Preco do produto não pode ser vazio' })
   @IsNumber()
   @Type(() => Number)
-  preco: number;
+  valor: number;
 
-  @IsNotEmpty({ message: 'Quantidade não pode ser vazio' })
+  @IsNotEmpty({ message: 'Quantidade do produto não pode ser vazio' })
   @IsNumber()
   @Type(() => Number)
   quantidade: number;
+
+  @IsNotEmpty({ message: 'Descricao do produto não pode ser vazio' })
+  @IsString()
+  descricao: string;
+
+  @IsNotEmpty({ message: 'Categoria do produto não pode ser vazio' })
+  @IsString()
+  categoria: string;
+
+  @IsNotEmpty({ message: 'Caracteristica do produto não pode ser vazio' })
+  @IsArray()
+  caracteristicas: CaracteristicaProduto[];
+
+  @IsNotEmpty({ message: 'Imagen do produto não pode ser vazio' })
+  @IsArray()
+  imagens: ImagemProduto[];
 }
