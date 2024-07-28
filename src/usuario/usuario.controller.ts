@@ -7,38 +7,22 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { GetUsuarioDto } from './dto/getUsuario.dto';
-import { UsuarioEntity } from './usuario.entity';
 import { PostUsuarioDto } from './dto/postUsuario.dto';
 import { PutUsuarioDto } from './dto/putUsuario.dto';
 import { UsuarioService } from './usuario.service';
-import { UsuarioRepository } from './usuario.repository';
-import { v4 as uuid } from 'uuid';
 
 @Controller('/usuarios')
 export class UsuarioController {
-  constructor(
-    private usuarioRepository: UsuarioRepository,
-    private usuarioService: UsuarioService,
-  ) {}
+  constructor(private usuarioService: UsuarioService) {}
   @Get()
   async getUsuarios() {
-    const usuariosSalvos = await this.usuarioService.listUsuarios();
+    const usuariosSalvos = await this.usuarioService.getUsuarios();
     return usuariosSalvos;
   }
 
   @Post()
   async postUsuario(@Body() dadosDoUsuario: PostUsuarioDto) {
-    const usuarioEntity = new UsuarioEntity();
-    usuarioEntity.id = uuid();
-    usuarioEntity.nome = dadosDoUsuario.nome;
-    usuarioEntity.email = dadosDoUsuario.email;
-    usuarioEntity.senha = dadosDoUsuario.senha;
-    this.usuarioRepository.salvar(usuarioEntity);
-    return {
-      usuario: new GetUsuarioDto(usuarioEntity.id, usuarioEntity.nome),
-      mensagem: 'usuário criado com sucesso',
-    };
+    return this.usuarioService.postUsuario(dadosDoUsuario);
   }
 
   @Put('/:id')
@@ -46,22 +30,11 @@ export class UsuarioController {
     @Param('id') id: string,
     @Body() dadosDoUsuario: PutUsuarioDto,
   ) {
-    const usuarioPut = await this.usuarioRepository.putUsuario(
-      id,
-      dadosDoUsuario,
-    );
-    return {
-      usuario: usuarioPut,
-      mensagem: 'usuário atualizado com sucesso',
-    };
+    return this.usuarioService.putUsuario(id, dadosDoUsuario);
   }
 
   @Delete('/:id')
   async deleteUsuario(@Param('id') id: string) {
-    const usuarioDelete = await this.usuarioRepository.deleteUsuario(id);
-    return {
-      usuario: usuarioDelete,
-      mensagem: 'usuário deletado com sucesso',
-    };
+    return this.usuarioService.deleteUsuario(id);
   }
 }
