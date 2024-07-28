@@ -5,8 +5,8 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { UsuarioRepository } from '../usuario.repository';
 import { Injectable } from '@nestjs/common';
+import { UsuarioService } from '../usuario.service';
 
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -14,14 +14,14 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 @ValidatorConstraint({ async: true })
 export class EmailEhUnicoValidator implements ValidatorConstraintInterface {
-  constructor(private usuarioRepository: UsuarioRepository) {}
+  constructor(private usuarioService: UsuarioService) {}
 
   async validate(
     value: any,
     validationArguments?: ValidationArguments,
   ): Promise<boolean> {
     const usuarioComEmailExiste =
-      await this.usuarioRepository.existeComEmail(value);
+      await this.usuarioService.existeComEmail(value);
     return !usuarioComEmailExiste;
   }
 }
