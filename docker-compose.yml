@@ -4,15 +4,15 @@ services:
   postgres:
     image: "postgres:latest"
     environment:
-      - POSTGRES_USER: ${DB_USERNAME}
-      - POSTGRES_PASSWORD: ${DB_PASSWORD}
-      - PGDATA: /data/postgres
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - PGDATA=/data/postgres
     volumes:
       - postgres:/data/postgres
     ports:
       - "5432:5432"
     networks:
-      - -postgres
+      - postgres
     restart: unless-stopped
 
   pgadmin:
@@ -26,10 +26,10 @@ services:
       - postgres
     networks:
       - postgres
-  
-  networks:
-    postgres:
-      driver: bridge
 
-  volumes:
-      postgres:
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  postgres:
