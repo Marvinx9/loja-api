@@ -6,9 +6,11 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
 import { CaracteristicaProdutoEntity } from './caracteristicaProduto.entity';
 import { ImagemProdutoEntity } from './imagemProduto.entity';
+import { UsuarioEntity } from 'src/usuario/usuario.entity';
 
 @Entity({ name: 'produtos' })
 export class ProdutoEntity {
@@ -46,6 +48,13 @@ export class ProdutoEntity {
     { cascade: true, eager: true },
   )
   imagens: ImagemProdutoEntity[];
+
+  @ManyToOne(() => UsuarioEntity, (usuarioEntity) => usuarioEntity.produto, {
+    orphanedRowAction: 'delete',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  usuario: UsuarioEntity;
 
   @CreateDateColumn({ name: 'created_at' })
   created_at: string;

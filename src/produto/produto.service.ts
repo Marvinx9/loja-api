@@ -62,8 +62,13 @@ export class ProdutoService {
     };
   }
 
+  async produtoById(id: string) {
+    const produto = await this.produtoRepository.findOneBy({ id });
+    return produto;
+  }
+
   async putProduto(id: string, produtoEntity: PutProdutoDto) {
-    const produtoPut = await this.produtoRepository.findOneBy({ id });
+    const produtoPut = await this.produtoById(id);
     Object.assign(produtoPut, produtoEntity);
     await this.produtoRepository.save(produtoPut);
     return {
