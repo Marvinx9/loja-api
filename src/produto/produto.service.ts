@@ -42,8 +42,8 @@ export class ProdutoService {
     produtoEntity.quantidade = dadosDoProduto.quantidade;
     produtoEntity.descricao = dadosDoProduto.descricao;
     produtoEntity.categoria = dadosDoProduto.categoria;
-    produtoEntity.caracteristicas = produtoEntity.caracteristicas;
-    produtoEntity.imagens = produtoEntity.imagens;
+    produtoEntity.caracteristicas = dadosDoProduto.caracteristicas;
+    produtoEntity.imagens = dadosDoProduto.imagens;
     await this.produtoRepository.save(produtoEntity);
 
     return {
@@ -63,7 +63,9 @@ export class ProdutoService {
   }
 
   async putProduto(id: string, produtoEntity: PutProdutoDto) {
-    const produtoPut = await this.produtoRepository.update(id, produtoEntity);
+    const produtoPut = await this.produtoRepository.findOneBy({ id });
+    Object.assign(produtoPut, produtoEntity);
+    await this.produtoRepository.save(produtoPut);
     return {
       produto: produtoPut,
       mensagem: 'produto atualizado com sucesso',

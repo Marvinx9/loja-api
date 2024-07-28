@@ -1,10 +1,8 @@
 import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
-// import { CaracteristicaProduto } from '../caracteristicaProduto.entity.dto';
-// import { ImagemProduto } from '../imagemProduto.entity.dto';
 import { PrimaryGeneratedColumn } from 'typeorm';
-import { CaracteristicaProdutoEntity } from '../caracteristicaProduto.entity';
-import { ImagemProdutoEntity } from '../imagemProduto.entity';
+import { CaracteristicaProdutoDto } from './caracteristicaProduto.dto';
+import { ImagemProdutoDto } from './imagemProduto.dto';
 
 export class PostProdutoDto {
   @PrimaryGeneratedColumn('uuid')
@@ -38,9 +36,9 @@ export class PostProdutoDto {
 
   @IsNotEmpty({ message: 'Caracteristica do produto não pode ser vazio' })
   @IsArray()
-  caracteristicas: CaracteristicaProdutoEntity[];
+  caracteristicas: CaracteristicaProdutoDto[];
 
   @IsNotEmpty({ message: 'Imagen do produto não pode ser vazio' })
   @IsArray()
-  imagens: ImagemProdutoEntity[];
+  imagens: ImagemProdutoDto[];
 }

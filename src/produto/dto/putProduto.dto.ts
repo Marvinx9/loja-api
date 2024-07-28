@@ -1,18 +1,38 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
+import { ImagemProdutoDto } from './imagemProduto.dto';
+import { CaracteristicaProdutoDto } from './caracteristicaProduto.dto';
 
 export class PutProdutoDto {
-  @IsOptional({ message: 'Nome não pode ser vazio' })
+  @IsOptional()
   @IsString()
   nome?: string;
 
-  @IsOptional({ message: 'Preco não pode ser vazio' })
+  @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  preco?: number;
+  valor?: number;
 
-  @IsOptional({ message: 'Quantidade não pode ser vazio' })
+  @IsOptional()
   @IsNumber()
   @Type(() => Number)
   quantidade?: number;
+
+  @IsOptional()
+  @IsString()
+  descricao?: string;
+
+  @IsOptional()
+  @IsString()
+  categoria?: string;
+
+  @IsOptional()
+  @IsArray()
+  @Type(() => CaracteristicaProdutoDto)
+  caracteristicas?: CaracteristicaProdutoDto[];
+
+  @IsOptional()
+  @IsArray()
+  @Type(() => ImagemProdutoDto)
+  imagens?: ImagemProdutoDto[];
 }
