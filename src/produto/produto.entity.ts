@@ -6,11 +6,9 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
-  ManyToOne,
 } from 'typeorm';
 import { CaracteristicaProdutoEntity } from './caracteristicaProduto.entity';
 import { ImagemProdutoEntity } from './imagemProduto.entity';
-import { UsuarioEntity } from 'src/usuario/usuario.entity';
 
 @Entity({ name: 'produtos' })
 export class ProdutoEntity {
@@ -18,7 +16,7 @@ export class ProdutoEntity {
   id: string;
 
   @Column({ name: 'usuario_id', length: 100, nullable: false })
-  usuario_id: string;
+  usuarioId: string;
 
   @Column({ name: 'nome', length: 100, nullable: false })
   nome: string;
@@ -49,19 +47,12 @@ export class ProdutoEntity {
   )
   imagens: ImagemProdutoEntity[];
 
-  @ManyToOne(() => UsuarioEntity, (usuarioEntity) => usuarioEntity.produto, {
-    orphanedRowAction: 'delete',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  usuario: UsuarioEntity;
-
   @CreateDateColumn({ name: 'created_at' })
-  created_at: string;
+  createdAt: string;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updated_at: string;
+  updatedAt: string;
 
   @DeleteDateColumn({ name: 'deleted_at' })
-  deleted_at: string;
+  deletedAt: string;
 }

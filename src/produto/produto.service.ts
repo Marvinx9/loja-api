@@ -20,7 +20,7 @@ export class ProdutoService {
       (produto) =>
         new GetProdutoDto(
           produto.id,
-          produto.usuario_id,
+          produto.usuarioId,
           produto.nome,
           produto.valor,
           produto.quantidade,
@@ -36,7 +36,7 @@ export class ProdutoService {
   async postProduto(dadosDoProduto: PostProdutoDto) {
     const produtoEntity = new ProdutoEntity();
     produtoEntity.id = uuid();
-    produtoEntity.usuario_id = dadosDoProduto.usuarioId;
+    produtoEntity.usuarioId = dadosDoProduto.usuarioId;
     produtoEntity.nome = dadosDoProduto.nome;
     produtoEntity.valor = dadosDoProduto.valor;
     produtoEntity.quantidade = dadosDoProduto.quantidade;
@@ -49,7 +49,7 @@ export class ProdutoService {
     return {
       produto: new GetProdutoDto(
         produtoEntity.id,
-        produtoEntity.usuario_id,
+        produtoEntity.usuarioId,
         produtoEntity.nome,
         produtoEntity.valor,
         produtoEntity.quantidade,

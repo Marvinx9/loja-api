@@ -1,4 +1,4 @@
-import { ProdutoEntity } from 'src/produto/produto.entity';
+import { PedidoEntity } from '../pedido/pedido.entity';
 import {
   Entity,
   Column,
@@ -23,18 +23,15 @@ export class UsuarioEntity {
   @Column({ name: 'senha', length: 255, nullable: false })
   senha: string;
 
-  @OneToMany(() => ProdutoEntity, (produtoEntity) => produtoEntity.usuario, {
-    cascade: true,
-    eager: true,
-  })
-  produto: ProdutoEntity[];
-
   @CreateDateColumn({ name: 'created_at' })
-  created_at: string;
+  createdAt: string;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updated_at: string;
+  updatedAt: string;
 
   @DeleteDateColumn({ name: 'deleted_at' })
-  deleted_at: string;
+  deletedAt: string;
+
+  @OneToMany(() => PedidoEntity, (pedido) => pedido.usuario)
+  pedidos: PedidoEntity[];
 }

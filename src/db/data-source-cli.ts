@@ -15,3 +15,5 @@ const dataSourceOptions: DataSourceOptions = {
 const dataSource = new DataSource(dataSourceOptions);
 
 export default dataSource;
+
+//ts-node --project tsconfig.migrations.json -r tsconfig-paths/register -r dotenv/config ./node_modules/typeorm/cli.js -d src/db/data-source-cli.ts migration:show
