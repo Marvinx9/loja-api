@@ -1,5 +1,15 @@
-import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { PedidoService } from './pedido.service';
+import { PutPedidoDto } from './dto/putPedido.dto';
 
 @Controller('/pedidos')
 export class PedidoController {
@@ -10,13 +20,16 @@ export class PedidoController {
   }
 
   @Post()
-  async postPedidos() {
-    return this.pedidoService.postPedido();
+  async postPedidos(@Query('usuarioId') usuarioId: string) {
+    return this.pedidoService.postPedido(usuarioId);
   }
 
   @Put('/:id')
-  async putPedido() {
-    return this.pedidoService.putPedido();
+  async putPedido(
+    @Param('id') id: string,
+    @Body() dadosDoPedido: PutPedidoDto,
+  ) {
+    return this.pedidoService.putPedido(id, dadosDoPedido);
   }
 
   @Delete('/:id')
