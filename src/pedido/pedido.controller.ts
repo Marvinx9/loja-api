@@ -9,19 +9,23 @@ import {
   Query,
 } from '@nestjs/common';
 import { PedidoService } from './pedido.service';
+import { PostPedidoDto } from './dto/postPedido.dto';
 import { PutPedidoDto } from './dto/putPedido.dto';
 
 @Controller('/pedidos')
 export class PedidoController {
   constructor(private pedidoService: PedidoService) {}
   @Get()
-  async getPedidos() {
-    return this.pedidoService.getPedido();
+  async getPedidos(@Query('usuarioId') usuarioId: string) {
+    return this.pedidoService.getPedidoUsuario(usuarioId);
   }
 
   @Post()
-  async postPedidos(@Query('usuarioId') usuarioId: string) {
-    return this.pedidoService.postPedido(usuarioId);
+  async postPedidos(
+    @Query('usuarioId') usuarioId: string,
+    @Body() dadosDoPedido: PostPedidoDto,
+  ) {
+    return this.pedidoService.postPedido(usuarioId, dadosDoPedido);
   }
 
   @Put('/:id')
