@@ -8,10 +8,6 @@ export class PostProdutoDto {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @IsNotEmpty({ message: 'Id do usuario não pode ser vazio' })
-  @IsString()
-  usuarioId: string;
-
   @IsNotEmpty({ message: 'Nome do produto não pode ser vazio' })
   @IsString()
   nome: string;

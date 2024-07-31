@@ -9,14 +9,12 @@ import {
 } from 'typeorm';
 import { CaracteristicaProdutoEntity } from './caracteristicaProduto.entity';
 import { ImagemProdutoEntity } from './imagemProduto.entity';
+import { ItemPedidoEntity } from 'src/pedido/itemPedido.entity';
 
 @Entity({ name: 'produtos' })
 export class ProdutoEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column({ name: 'usuario_id', length: 100, nullable: false })
-  usuarioId: string;
 
   @Column({ name: 'nome', length: 100, nullable: false })
   nome: string;
@@ -46,6 +44,9 @@ export class ProdutoEntity {
     { cascade: true, eager: true },
   )
   imagens: ImagemProdutoEntity[];
+
+  @OneToMany(() => ItemPedidoEntity, (itemPedido) => itemPedido.produto)
+  itensPedido: ItemPedidoEntity[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: string;
