@@ -24,6 +24,20 @@
 
 ## Description
 
+## Migration
+<p>For generate migration on success.</p>
+
+```bash
+$ npm run typeorm migration:gererate
+```
+
+<p>For execute migration on success.</p>
+
+```bash
+$ npm run typeorm migration:run
+```
+
+
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
