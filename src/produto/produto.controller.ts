@@ -6,17 +6,26 @@ import {
   Param,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PostProdutoDto } from './dto/postProduto.dto';
 import { PutProdutoDto } from './dto/putProduto.dto';
 import { ProdutoService } from './produto.service';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('/produtos')
 export class ProdutoController {
   constructor(private produtoService: ProdutoService) {}
   @Get()
+  @UseInterceptors(CacheInterceptor)
   async getProdutos() {
     return this.produtoService.getProduto();
+  }
+
+  @Get('/:id')
+  @UseInterceptors(CacheInterceptor)
+  async getProdutoById(@Param('id') id: string) {
+    return this.produtoService.getProdutoById(id);
   }
 
   @Post()
