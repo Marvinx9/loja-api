@@ -32,6 +32,15 @@ export class ProdutoService {
     return produtos;
   }
 
+  async getProdutoById(id: string) {
+    const produtoSalvo = await this.produtoRepository.findOneBy({ id: id });
+    if (!produtoSalvo) {
+      throw new NotFoundException('Produto não encontrado');
+    }
+
+    return produtoSalvo;
+  }
+
   async postProduto(dadosDoProduto: PostProdutoDto) {
     const produtoEntity = new ProdutoEntity();
     produtoEntity.id = uuid();
