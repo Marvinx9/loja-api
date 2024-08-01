@@ -1,5 +1,5 @@
 import { StatusPedido } from '../enum/statuspedido.enum';
-import { UsuarioEntity } from 'src/usuario/usuario.entity';
+import { UsuarioEntity } from '../../usuario/usuario.entity';
 import { IsArray, IsNotEmpty } from 'class-validator';
 import { PrimaryGeneratedColumn } from 'typeorm';
 import { ItensPedidoDto } from './itensPedido.dto';
