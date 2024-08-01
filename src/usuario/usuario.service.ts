@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UsuarioEntity } from './usuario.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -33,9 +33,8 @@ export class UsuarioService {
   async postUsuario(dadosDoUsuario: PostUsuarioDto) {
     const usuarioEntity = new UsuarioEntity();
     usuarioEntity.id = uuid();
-    usuarioEntity.nome = dadosDoUsuario.nome;
-    usuarioEntity.email = dadosDoUsuario.email;
-    usuarioEntity.senha = dadosDoUsuario.senha;
+
+    Object.assign(usuarioEntity, dadosDoUsuario as UsuarioEntity);
 
     await this.usuarioRepository.save(usuarioEntity);
     return {
@@ -44,23 +43,37 @@ export class UsuarioService {
         usuarioEntity.nome,
         usuarioEntity.email,
       ),
-      mensagem: 'usuário criado com sucesso',
+      mensagem: 'Usuário criado com sucesso.',
     };
   }
 
-  async putUsuario(id: string, usuarioEntity: PutUsuarioDto) {
-    const usuarioPut = await this.usuarioRepository.update(id, usuarioEntity);
+  async putUsuario(id: string, dadosUsuario: PutUsuarioDto) {
+    const usuario = await this.usuarioRepository.findOneBy({ id });
+
+    if (usuario === null) {
+      throw new NotFoundException('Usuario não encontrado.');
+    }
+
+    Object.assign(usuario, dadosUsuario as UsuarioEntity);
+
+    await this.usuarioRepository.save(usuario);
+
     return {
-      usuario: usuarioPut,
-      mensagem: 'usuário atualizado com sucesso',
+      usuario: usuario,
+      mensagem: 'Usuário atualizado com sucesso.',
     };
   }
 
   async deleteUsuario(id: string) {
-    const usuarioDelete = await this.usuarioRepository.delete(id);
+    const resultado = await this.usuarioRepository.delete(id);
+
+    if (!resultado.affected) {
+      throw new NotFoundException('Usuário não encontrado.');
+    }
+
     return {
-      usuario: usuarioDelete,
-      mensagem: 'usuário deletado com sucesso',
+      usuario: resultado,
+      mensagem: 'Usuário deletado com sucesso.',
     };
   }
 }

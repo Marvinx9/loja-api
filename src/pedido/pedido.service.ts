@@ -35,7 +35,7 @@ export class PedidoService {
     });
   }
 
-  private async buscaUsuario(id) {
+  private async buscaUsuario(id: string) {
     const usuario = await this.usuarioRepository.findOneBy({ id });
 
     if (usuario === null) {
@@ -115,7 +115,7 @@ export class PedidoService {
     if (pedido === null) {
       throw new NotFoundException('O pedido não foi encontrado');
     }
-    Object.assign(pedido, dto);
+    Object.assign(pedido, dto as PedidoEntity);
 
     return this.pedidoRepository.save(pedido);
   }

@@ -36,13 +36,7 @@ export class ProdutoService {
     const produtoEntity = new ProdutoEntity();
     produtoEntity.id = uuid();
 
-    produtoEntity.nome = dadosDoProduto.nome;
-    produtoEntity.valor = dadosDoProduto.valor;
-    produtoEntity.quantidade = dadosDoProduto.quantidade;
-    produtoEntity.descricao = dadosDoProduto.descricao;
-    produtoEntity.categoria = dadosDoProduto.categoria;
-    produtoEntity.caracteristicas = dadosDoProduto.caracteristicas;
-    produtoEntity.imagens = dadosDoProduto.imagens;
+    Object.assign(produtoEntity, dadosDoProduto as ProdutoEntity);
     await this.produtoRepository.save(produtoEntity);
 
     return {
@@ -72,7 +66,7 @@ export class ProdutoService {
       throw new NotFoundException('O produto não foi encontrado');
     }
 
-    Object.assign(produtoPut, produtoEntity);
+    Object.assign(produtoPut, produtoEntity as ProdutoEntity);
     await this.produtoRepository.save(produtoPut);
     return {
       produto: produtoPut,
