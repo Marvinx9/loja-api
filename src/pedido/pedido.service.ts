@@ -111,7 +111,6 @@ export class PedidoService {
 
   async putPedido(id: string, dto: PutPedidoDto) {
     const pedido = await this.pedidoRepository.findOneBy({ id });
-    console.log('=-=-=-=-=-=', pedido);
 
     if (pedido === null) {
       throw new NotFoundException('O pedido não foi encontrado');
