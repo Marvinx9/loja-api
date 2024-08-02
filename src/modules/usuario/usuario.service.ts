@@ -30,6 +30,13 @@ export class UsuarioService {
     return possivelUsuario !== undefined;
   }
 
+  async buscaPorEmail(emailUsuario: string) {
+    return this.usuarioRepository.findOne({
+      where: { email: emailUsuario },
+      select: ['email', 'senha'],
+    });
+  }
+
   async postUsuario(dadosDoUsuario: PostUsuarioDto) {
     const usuarioEntity = new UsuarioEntity();
     usuarioEntity.id = uuid();
