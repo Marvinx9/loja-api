@@ -7,10 +7,12 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PedidoService } from './pedido.service';
 import { PostPedidoDto } from './dto/postPedido.dto';
 import { PutPedidoDto } from './dto/putPedido.dto';
+import { AuthenticationGuard } from '../authentication/authentication.guard';
 
 @Controller('/pedidos')
 export class PedidoController {
@@ -21,6 +23,7 @@ export class PedidoController {
   }
 
   @Post()
+  @UseGuards(AuthenticationGuard)
   async postPedidos(
     @Query('usuarioId') usuarioId: string,
     @Body() dadosDoPedido: PostPedidoDto,
