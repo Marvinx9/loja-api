@@ -41,9 +41,12 @@ export class PedidoController {
   @Put('/:id')
   async putPedido(
     @Param('id') id: string,
+    @Req() req: RequisicaoComUsuario,
     @Body() dadosDoPedido: PutPedidoDto,
   ) {
-    return this.pedidoService.putPedido(id, dadosDoPedido);
+    const usuarioId = req.usuario.sub;
+
+    return this.pedidoService.putPedido(id, usuarioId, dadosDoPedido);
   }
 
   @Delete('/:id')

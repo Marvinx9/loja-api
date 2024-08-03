@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
@@ -109,15 +110,71 @@ export class PedidoService {
     return pedidoCriado;
   }
 
-  async putPedido(id: string, dto: PutPedidoDto) {
+  async putPedido(id: string, usuarioId: string, putPedidoDto: PutPedidoDto) {
     const pedido = await this.pedidoRepository.findOneBy({ id });
 
     if (pedido === null) {
       throw new NotFoundException('O pedido não foi encontrado');
     }
-    Object.assign(pedido, dto as PedidoEntity);
 
-    return this.pedidoRepository.save(pedido);
+    const pedidoUsuario = await this.pedidoRepository.find({
+      where: {
+        usuario: {
+          id: usuarioId,
+        },
+      },
+      relations: ['usuario'],
+    });
+
+    if (!pedidoUsuario) {
+      throw new UnauthorizedException(
+        'Usuario sem permisão para atualizar pedido',
+      );
+    }
+    const usuario = await this.buscaUsuario(usuarioId);
+
+    if (putPedidoDto.itensPedido) {
+      const produtosIds = putPedidoDto.itensPedido.map(
+        (itemPedido) => itemPedido.produtoId,
+      );
+      const produtosRelacionados = await this.produtoRepository.findBy({
+        id: In(produtosIds),
+      });
+
+      const pedidoEntity = new PedidoEntity();
+      pedidoEntity.status = StatusPedido.EM_PROCESSAMENTO;
+      pedidoEntity.usuario = usuario;
+      await this.trataDadosDoPedido(putPedidoDto, produtosRelacionados);
+
+      const itensPedidoEntity = putPedidoDto.itensPedido.map((itemPedido) => {
+        const produtoRelacionado = produtosRelacionados.find(
+          (produto) => produto.id === itemPedido.produtoId,
+        );
+
+        const itemPedidoEntity = new ItemPedidoEntity();
+
+        itemPedidoEntity.produto = produtoRelacionado!;
+        itemPedidoEntity.precoVenda = produtoRelacionado!.valor;
+        itemPedidoEntity.quantidade = itemPedido.quantidade;
+        itemPedidoEntity.produto.quantidade -= itemPedido.quantidade;
+        return itemPedidoEntity;
+      });
+
+      const valorTotal = itensPedidoEntity.reduce((total, item) => {
+        return total + item.precoVenda * item.quantidade;
+      }, 0);
+
+      pedidoEntity.itensPedido = itensPedidoEntity;
+      pedidoEntity.valorTotal = valorTotal;
+
+      Object.assign(pedido, pedidoEntity as PedidoEntity);
+
+      const pedidoUpdate = await this.pedidoRepository.save(pedido);
+      return {
+        produto: pedidoUpdate,
+        mensagem: 'Pedido atualizado com sucesso',
+      };
+    }
   }
 
   async deletePedido(id: string) {
