@@ -14,9 +14,9 @@ export class FiltroDeExcecaoGlobal implements ExceptionFilter {
     private adapterHost: HttpAdapterHost,
     private loggerNativo: ConsoleLogger,
   ) {}
-  catch(execao: unknown, host: ArgumentsHost) {
-    this.loggerNativo.error(execao);
-    console.error(execao);
+  catch(excecao: unknown, host: ArgumentsHost) {
+    this.loggerNativo.error(excecao);
+    console.error(excecao);
 
     const { httpAdapter } = this.adapterHost;
 
@@ -24,11 +24,16 @@ export class FiltroDeExcecaoGlobal implements ExceptionFilter {
     const resposta = contexto.getResponse();
     const requisicao = contexto.getRequest();
 
+    if ('usuario' in requisicao) {
+      this.loggerNativo.log(
+        `Rota acessada pelo usuário ${requisicao.usuario.sub}`,
+      );
+    }
     const { status, body } =
-      execao instanceof HttpException
+      excecao instanceof HttpException
         ? {
-            status: execao.getStatus(),
-            body: execao.getResponse(),
+            status: excecao.getStatus(),
+            body: excecao.getResponse(),
           }
         : {
             status: HttpStatus.INTERNAL_SERVER_ERROR,

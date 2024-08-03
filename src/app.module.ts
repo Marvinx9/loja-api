@@ -14,6 +14,7 @@ import { FiltroDeExcecaoGlobal } from './recursos/filtros/filtro-de-excecao-glob
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-yet';
 import { AuthenticacaoModule } from './modules/authentication/authenticacao.module';
+import { LoggerGlobalInterceptor } from './recursos/interceptores/logger-global/logger-global.interceptor';
 
 @Module({
   imports: [
@@ -43,6 +44,10 @@ import { AuthenticacaoModule } from './modules/authentication/authenticacao.modu
     {
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggerGlobalInterceptor,
     },
     ConsoleLogger,
   ],
