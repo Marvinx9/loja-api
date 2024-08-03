@@ -120,5 +120,16 @@ export class PedidoService {
     return this.pedidoRepository.save(pedido);
   }
 
-  async deletePedido() {}
+  async deletePedido(id: string) {
+    const resultado = await this.pedidoRepository.delete({ id });
+
+    if (!resultado.affected) {
+      throw new NotFoundException('Pedido não encontrado.');
+    }
+
+    return {
+      usuario: resultado,
+      mensagem: 'Pedido deletado com sucesso.',
+    };
+  }
 }
