@@ -4,8 +4,8 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
-  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -38,7 +38,7 @@ export class PedidoController {
     return this.pedidoService.postPedido(usuarioId, dadosDoPedido);
   }
 
-  @Put('/:id')
+  @Patch('/:id')
   async putPedido(
     @Param('id') id: string,
     @Req() req: RequisicaoComUsuario,

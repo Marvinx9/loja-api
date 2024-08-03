@@ -119,6 +119,7 @@ export class PedidoService {
 
     const pedidoUsuario = await this.pedidoRepository.find({
       where: {
+        id: id,
         usuario: {
           id: usuarioId,
         },
@@ -126,7 +127,7 @@ export class PedidoService {
       relations: ['usuario'],
     });
 
-    if (!pedidoUsuario) {
+    if (!pedidoUsuario.length) {
       throw new UnauthorizedException(
         'Usuario sem permisão para atualizar pedido',
       );
