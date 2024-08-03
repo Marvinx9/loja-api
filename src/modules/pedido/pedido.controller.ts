@@ -6,28 +6,35 @@ import {
   Param,
   Post,
   Put,
-  Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { PedidoService } from './pedido.service';
 import { PostPedidoDto } from './dto/postPedido.dto';
 import { PutPedidoDto } from './dto/putPedido.dto';
-import { AuthenticationGuard } from '../authentication/authentication.guard';
+import {
+  AuthenticationGuard,
+  RequisicaoComUsuario,
+} from '../authentication/authentication.guard';
 
+@UseGuards(AuthenticationGuard)
 @Controller('/pedidos')
 export class PedidoController {
   constructor(private pedidoService: PedidoService) {}
+
   @Get()
-  async getPedidos(@Query('usuarioId') usuarioId: string) {
+  async getPedidos(@Req() req: RequisicaoComUsuario) {
+    const usuarioId = req.usuario.sub;
     return this.pedidoService.getPedidoUsuario(usuarioId);
   }
 
   @Post()
-  @UseGuards(AuthenticationGuard)
   async postPedidos(
-    @Query('usuarioId') usuarioId: string,
+    @Req() req: RequisicaoComUsuario,
     @Body() dadosDoPedido: PostPedidoDto,
   ) {
+    const usuarioId = req.usuario.sub;
+
     return this.pedidoService.postPedido(usuarioId, dadosDoPedido);
   }
 
@@ -40,7 +47,7 @@ export class PedidoController {
   }
 
   @Delete('/:id')
-  async deletePedido() {
-    return this.pedidoService.deletePedido();
+  async deletePedido(@Param('id') id: string) {
+    return this.pedidoService.deletePedido(id);
   }
 }
